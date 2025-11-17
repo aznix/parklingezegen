@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Park Lingezegen - Boomsoorten</title>
+    <link rel="stylesheet" href="./src/style.css">
+  </head>
+  <body>
+    <!-- Mode Selector Screen -->
+    <div id="modeSelector" class="mode-selector">
+      <div class="mode-selector__content">
+        <h1 class="mode-selector__title">🌳 Park Lingezegen</h1>
+        <p class="mode-selector__subtitle">Kies uw modus</p>
+        
+        <div class="mode-selector__options">
+          <button class="mode-card mode-card--visitor" id="visitorMode">
+            <div class="mode-card__icon">👥</div>
+            <h2 class="mode-card__title">Bezoeker</h2>
+            <p class="mode-card__description">Verken het park en ontdek de boomsoorten</p>
+            <ul class="mode-card__features">
+              <li>🗺️ Interactieve kaart</li>
+              <li>📖 Uitgebreide informatie</li>
+              <li>📸 Foto's en details</li>
+            </ul>
+          </button>
+          
+          <button class="mode-card mode-card--staff" id="staffMode">
+            <div class="mode-card__icon">🔧</div>
+            <h2 class="mode-card__title">Medewerker</h2>
+            <p class="mode-card__description">Beheer en bewerk zones</p>
+            <ul class="mode-card__features">
+              <li>⚙️ Admin tools</li>
+              <li>✏️ Zones bewerken</li>
+              <li>📊 Statistieken</li>
+            </ul>
+            <div class="mode-card__badge">Wachtwoord vereist</div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Password Modal -->
+    <div id="passwordModal" class="password-modal">
+      <div class="password-modal__content">
+        <h2 class="password-modal__title">🔐 Medewerker Toegang</h2>
+        <p class="password-modal__description">Voer het wachtwoord in voor medewerker modus</p>
+        <input type="password" id="passwordInput" class="password-modal__input" placeholder="Wachtwoord">
+        <div class="password-modal__error" id="passwordError"></div>
+        <div class="password-modal__buttons">
+          <button class="password-modal__btn password-modal__btn--cancel" id="cancelPassword">Annuleren</button>
+          <button class="password-modal__btn password-modal__btn--confirm" id="confirmPassword">Bevestigen</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="map"></div>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

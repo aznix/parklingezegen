@@ -1,0 +1,23 @@
+{
+  "name": "v2",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^7.2.2"
+  },
+  "dependencies": {
+    "@turf/area": "^7.2.0",
+    "@turf/bbox": "^7.2.0",
+    "@turf/boolean-within": "^7.2.0",
+    "@turf/intersect": "^7.2.0",
+    "@turf/length": "^7.2.0",
+    "maplibre-gl": "^5.13.0",
+    "maplibre-gl-draw": "^1.6.9"
+  }
+}

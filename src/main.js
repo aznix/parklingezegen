@@ -80,36 +80,50 @@ function startMode(mode) {
     adminToggle.style.display = mode === 'visitor' ? 'none' : 'block';
   }
   
-  // Create mode switcher button
-  const modeSwitcherBtn = document.createElement('button');
-  modeSwitcherBtn.className = 'mode-switcher-btn';
-  modeSwitcherBtn.innerHTML = `<span class="mode-switcher-btn__icon">${mode === 'visitor' ? '👥' : '🔧'}</span>${mode === 'visitor' ? 'Bezoeker Modus' : 'Medewerker Modus'}`;
-  modeSwitcherBtn.title = 'Verander modus';
-  document.body.appendChild(modeSwitcherBtn);
+  // Check if device is mobile
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  
+  // Create mode switcher button (only on desktop)
+  if (!isMobile) {
+    const modeSwitcherBtn = document.createElement('button');
+    modeSwitcherBtn.className = 'mode-switcher-btn';
+    modeSwitcherBtn.innerHTML = `<span class="mode-switcher-btn__icon">${mode === 'visitor' ? '👥' : '🔧'}</span>${mode === 'visitor' ? 'Bezoeker Modus' : 'Medewerker Modus'}`;
+    modeSwitcherBtn.title = 'Verander modus';
+    document.body.appendChild(modeSwitcherBtn);
 
-  modeSwitcherBtn.addEventListener('click', () => {
-    const confirmSwitch = confirm(
-      mode === 'visitor' 
-        ? '🔧 Wilt u naar Medewerker modus wisselen?\n\n(U moet opnieuw inloggen met het wachtwoord)'
-        : '👥 Wilt u naar Bezoeker modus wisselen?\n\n(Admin functies worden uitgeschakeld)'
-    );
-    
-    if (confirmSwitch) {
-      sessionStorage.removeItem('appMode');
-      window.location.reload();
-    }
-  });
+    modeSwitcherBtn.addEventListener('click', () => {
+      const confirmSwitch = confirm(
+        mode === 'visitor' 
+          ? '🔧 Wilt u naar Medewerker modus wisselen?\n\n(U moet opnieuw inloggen met het wachtwoord)'
+          : '👥 Wilt u naar Bezoeker modus wisselen?\n\n(Admin functies worden uitgeschakeld)'
+      );
+      
+      if (confirmSwitch) {
+        sessionStorage.removeItem('appMode');
+        window.location.reload();
+      }
+    });
+  }
 }
+
+// Check if device is mobile
+const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
 // Check if we need to show mode selector or restore previous mode
 const savedMode = sessionStorage.getItem('appMode');
-if (savedMode) {
+
+if (isMobile) {
+  // On mobile, always use visitor mode automatically
+  currentMode = 'visitor';
+  modeSelector.style.display = 'none';
+  console.log('📱 Mobile detected - Auto-starting in visitor mode');
+} else if (savedMode) {
   // Auto-start in saved mode (alleen voor deze sessie)
   currentMode = savedMode;
   modeSelector.style.display = 'none';
   console.log(`📱 Restoring ${savedMode} mode`);
 } else {
-  // Show mode selector - set currentMode to null to prevent initialization
+  // Show mode selector on desktop - set currentMode to null to prevent initialization
   currentMode = null;
   console.log('👋 Showing mode selector');
 }

@@ -60,6 +60,19 @@ html, body {
   letter-spacing: -1px;
 }
 
+.mode-selector__logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.park-logo {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+}
+
 .mode-selector__subtitle {
   font-size: 20px;
   color: #94a3b8;
@@ -1781,6 +1794,14 @@ body.dark-mode .legend-close:hover {
   .mode-selector__title {
     font-size: 32px;
   }
+
+  .mode-selector__logo {
+    margin-bottom: 15px;
+  }
+
+  .park-logo {
+    max-width: 280px;
+  }
   
   .mode-selector__subtitle {
     font-size: 16px;
@@ -1980,6 +2001,10 @@ body.dark-mode .legend-close:hover {
 @media (max-width: 480px) {
   .mode-selector__title {
     font-size: 26px;
+  }
+
+  .park-logo {
+    max-width: 240px;
   }
   
   .mode-selector__subtitle {

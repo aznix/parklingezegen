@@ -802,8 +802,12 @@ if (currentMode === 'visitor' || currentMode === null) {
 
 // Mode switcher button will be created in startMode() function
 
-// Create admin panel
-const adminPanel = document.createElement('div');
+// Admin panel - ONLY for staff mode
+let adminPanel;
+
+// Create admin panel ONLY in staff mode or when not on mobile
+if (currentMode === 'staff' || !isMobile) {
+  adminPanel = document.createElement('div');
 adminPanel.className = 'admin-panel';
 adminPanel.innerHTML = `
   <div class="admin-panel__header">
@@ -905,6 +909,7 @@ adminPanel.innerHTML = `
   </div>
 `;
 document.body.appendChild(adminPanel);
+}
 
 // Create legend panel
 const legendPanel = document.createElement('div');
@@ -1035,48 +1040,51 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') prevLightboxPhoto();
 });
 
-// Color picker update handler
-const colorInput = document.getElementById('zoneColor');
-const colorPreview = document.getElementById('colorPreview');
+// Color picker update handler - ONLY if admin panel exists
+if (adminPanel) {
+  const colorInput = document.getElementById('zoneColor');
+  const colorPreview = document.getElementById('colorPreview');
 
-colorInput.addEventListener('input', (e) => {
-  const color = e.target.value;
-  colorPreview.textContent = color.toUpperCase();
-  colorPreview.style.color = color;
-});
+  colorInput.addEventListener('input', (e) => {
+    const color = e.target.value;
+    colorPreview.textContent = color.toUpperCase();
+    colorPreview.style.color = color;
+  });
+}
 
-// Photo upload handler - store photos temporarily until zone is saved
-let pendingPhotos = [];
+// Photo upload handler - store photos temporarily until zone is saved - ONLY if admin panel exists
+if (adminPanel) {
+  let pendingPhotos = [];
 
-document.getElementById('zonePhoto').addEventListener('change', (e) => {
-  const files = e.target.files;
-  if (files.length === 0) return;
-  
-  pendingPhotos = [];
-  let filesProcessed = 0;
-  
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    const reader = new FileReader();
+  document.getElementById('zonePhoto').addEventListener('change', (e) => {
+    const files = e.target.files;
+    if (files.length === 0) return;
     
-    reader.onload = (event) => {
-      pendingPhotos.push({
-        url: event.target.result,
-        name: file.name,
-        timestamp: Date.now()
-      });
-      filesProcessed++;
+    pendingPhotos = [];
+    let filesProcessed = 0;
+    
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const reader = new FileReader();
       
-      if (filesProcessed === files.length) {
-        showNotification(`${files.length} foto${files.length > 1 ? "'s" : ''} geselecteerd`, 'success');
-      }
-    };
-    
-    reader.readAsDataURL(file);
-  }
-});
+      reader.onload = (event) => {
+        pendingPhotos.push({
+          url: event.target.result,
+          name: file.name,
+          timestamp: Date.now()
+        });
+        filesProcessed++;
+        
+        if (filesProcessed === files.length) {
+          showNotification(`${files.length} foto${files.length > 1 ? "'s" : ''} geselecteerd`, 'success');
+        }
+      };
+      
+      reader.readAsDataURL(file);
+    }
+  });
 
-// Initialize MapboxDraw
+// Initialize MapboxDraw - ONLY if admin panel exists
 draw = new MapboxDraw({
   displayControlsDefault: false,
   controls: {},
@@ -1121,46 +1129,47 @@ draw = new MapboxDraw({
   ]
 });
 
-// Admin toggle functionality
-adminToggle.addEventListener('click', () => {
-  adminMode = !adminMode;
-  if (adminMode) {
-    adminPanel.classList.add('active');
-    adminToggle.classList.add('active');
-    map.addControl(draw, 'top-left');
-    refreshZonesList();
-    updateStatistics(); // Automatisch statistieken laden
-  } else {
+  // Admin toggle functionality - ONLY if admin panel exists
+  if (adminPanel) {
+    adminToggle.addEventListener('click', () => {
+    adminMode = !adminMode;
+    if (adminMode) {
+      adminPanel.classList.add('active');
+      adminToggle.classList.add('active');
+      map.addControl(draw, 'top-left');
+      refreshZonesList();
+      updateStatistics(); // Automatisch statistieken laden
+    } else {
+      adminPanel.classList.remove('active');
+      adminToggle.classList.remove('active');
+      map.removeControl(draw);
+    }
+  });
+
+  // Close admin panel
+  adminPanel.querySelector('.admin-panel__close').addEventListener('click', () => {
+    adminMode = false;
     adminPanel.classList.remove('active');
     adminToggle.classList.remove('active');
     map.removeControl(draw);
-  }
-});
+  });
 
-// Close admin panel
-adminPanel.querySelector('.admin-panel__close').addEventListener('click', () => {
-  adminMode = false;
-  adminPanel.classList.remove('active');
-  adminToggle.classList.remove('active');
-  map.removeControl(draw);
-});
+  // Drawing tools
+  document.getElementById('drawPolygon').addEventListener('click', () => {
+    draw.changeMode('draw_polygon');
+  });
 
-// Drawing tools
-document.getElementById('drawPolygon').addEventListener('click', () => {
-  draw.changeMode('draw_polygon');
-});
+  document.getElementById('deleteShape').addEventListener('click', () => {
+    const selected = draw.getSelected();
+    if (selected.features.length > 0) {
+      selected.features.forEach(feature => {
+        draw.delete(feature.id);
+      });
+    }
+  });
 
-document.getElementById('deleteShape').addEventListener('click', () => {
-  const selected = draw.getSelected();
-  if (selected.features.length > 0) {
-    selected.features.forEach(feature => {
-      draw.delete(feature.id);
-    });
-  }
-});
-
-// Zone form submission
-document.getElementById('zoneForm').addEventListener('submit', (e) => {
+  // Zone form submission
+  document.getElementById('zoneForm').addEventListener('submit', (e) => {
   e.preventDefault();
   
   const drawnFeatures = draw.getAll();
@@ -1345,8 +1354,11 @@ document.getElementById('importGeoJSON').addEventListener('change', (e) => {
   }
 });
 
-// Print map
-document.getElementById('printMap').addEventListener('click', printMap);
+  // Print map
+  document.getElementById('printMap').addEventListener('click', printMap);
+  
+  } // End of inner admin panel event listeners if block
+} // End of photo upload handler if block
 
 // Map click handler
 map.on('click', (e) => {

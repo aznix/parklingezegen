@@ -5,11 +5,27 @@ html, body {
   height: 100%;
   font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background: #0f172a;
+  /* Better touch scrolling on mobile */
+  -webkit-overflow-scrolling: touch;
+  /* Prevent text selection on mobile */
+  -webkit-tap-highlight-color: transparent;
+  /* Prevent font size adjustment on orientation change */
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+* {
+  /* Better touch targets on mobile */
+  -webkit-tap-highlight-color: transparent;
 }
 
 #map {
   position: absolute;
   inset: 0;
+  /* Prevent touch gestures from interfering with map */
+  touch-action: none;
 }
 
 /* Mode Selector */
@@ -436,6 +452,9 @@ html, body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
+  /* Better scrolling on mobile */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 .zone-panel::-webkit-scrollbar {
@@ -1142,6 +1161,9 @@ html, body {
   flex: 1;
   overflow-y: auto;
   padding: 20px;
+  /* Better scrolling on mobile */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 /* Admin Sections */
@@ -1750,6 +1772,59 @@ body.dark-mode .legend-close:hover {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  /* Mode selector - mobile */
+  .mode-selector__content {
+    padding: 20px;
+    width: 100%;
+  }
+  
+  .mode-selector__title {
+    font-size: 32px;
+  }
+  
+  .mode-selector__subtitle {
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+  
+  .mode-selector__options {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .mode-card {
+    padding: 25px;
+  }
+  
+  .mode-card__icon {
+    font-size: 48px;
+  }
+  
+  .mode-card__title {
+    font-size: 20px;
+  }
+  
+  .mode-card__description {
+    font-size: 13px;
+  }
+  
+  /* Password modal - mobile */
+  .password-modal__content {
+    width: 90%;
+    max-width: 350px;
+    padding: 25px;
+  }
+  
+  .password-modal__title {
+    font-size: 20px;
+  }
+  
+  .password-modal__input {
+    font-size: 16px;
+    padding: 12px;
+  }
+  
+  /* Feature toolbar - mobile */
   .feature-toolbar {
     right: 10px;
     top: 10px;
@@ -1758,13 +1833,263 @@ body.dark-mode .legend-close:hover {
     padding: 15px;
   }
   
+  /* Legend panel - mobile */
   .legend-panel {
     width: 240px;
+    max-height: 60vh;
   }
   
+  /* Notification - mobile */
   .notification {
     right: 10px;
     min-width: 200px;
+    max-width: calc(100vw - 20px);
+  }
+  
+  /* Zone info panel - mobile */
+  .zone-panel {
+    width: 100%;
+    max-width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    border-radius: 20px 20px 0 0;
+    max-height: 75vh;
+    border-right: none;
+    border-top: 4px solid #cad400;
+    transform: translateY(100%);
+  }
+  
+  .zone-panel.is-open {
+    transform: translateY(0);
+  }
+  
+  .zone-panel__header {
+    padding: 16px 20px;
+  }
+  
+  .zone-panel__icon {
+    font-size: 36px;
+  }
+  
+  .zone-panel__title {
+    font-size: 20px;
+  }
+  
+  .zone-panel__subtitle {
+    font-size: 13px;
+  }
+  
+  .zone-panel__content {
+    padding: 16px 20px;
+  }
+  
+  .zone-panel__section-title {
+    font-size: 16px;
+  }
+  
+  .zone-panel__description {
+    font-size: 14px;
+  }
+  
+  .zone-panel__photos {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 8px;
+  }
+  
+  /* Popup menu - mobile */
+  .popup-menu {
+    width: 280px;
+    max-width: calc(100vw - 40px);
+  }
+  
+  /* Admin panel - mobile */
+  .admin-panel {
+    width: 100%;
+    max-width: 100%;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+    max-height: 90vh;
+  }
+  
+  .admin-panel.open {
+    transform: translateY(0);
+  }
+  
+  .admin-content {
+    max-height: calc(90vh - 100px);
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .zone-list-item {
+    padding: 12px;
+  }
+  
+  /* Buttons - mobile */
+  .admin-toggle {
+    bottom: 80px;
+    right: 15px;
+    padding: 12px 18px;
+    font-size: 13px;
+  }
+  
+  .mode-switcher-btn {
+    bottom: 15px;
+    left: 15px;
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+  
+  /* Drawing controls - mobile */
+  .maplibregl-ctrl-group {
+    margin: 10px;
+  }
+  
+  .maplibregl-ctrl-group button {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+  
+  /* Navigation controls */
+  .maplibregl-ctrl-zoom-in,
+  .maplibregl-ctrl-zoom-out,
+  .maplibregl-ctrl-compass {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  /* Attribution - hide on small screens */
+  .maplibregl-ctrl-attrib {
+    font-size: 10px;
+    max-width: 50vw;
+  }
+  
+  .maplibregl-ctrl-attrib.maplibregl-compact {
+    min-height: 20px;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+  .mode-selector__title {
+    font-size: 26px;
+  }
+  
+  .mode-selector__subtitle {
+    font-size: 14px;
+  }
+  
+  .mode-card {
+    padding: 20px;
+  }
+  
+  .mode-card__icon {
+    font-size: 40px;
+  }
+  
+  .mode-card__title {
+    font-size: 18px;
+  }
+  
+  .zone-info-panel {
+    max-height: 80vh;
+  }
+  
+  .zone-info-content {
+    max-height: calc(80vh - 120px);
+  }
+  
+  .admin-panel {
+    max-height: 95vh;
+  }
+  
+  .admin-content {
+    max-height: calc(95vh - 100px);
+  }
+  
+  .popup-menu {
+    width: 260px;
+  }
+  
+  .admin-toggle {
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+  
+  .mode-switcher-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  /* Photo lightbox - extra small mobile */
+  .photo-lightbox__prev,
+  .photo-lightbox__next {
+    width: 50px;
+    height: 50px;
+    font-size: 36px;
+  }
+  
+  .photo-lightbox__prev {
+    left: 10px;
+  }
+  
+  .photo-lightbox__next {
+    right: 10px;
+  }
+  
+  .photo-lightbox__close {
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 28px;
+  }
+  
+  /* Zone panel - extra small */
+  .zone-panel {
+    max-height: 85vh;
+  }
+}
+
+/* Tablet landscape */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .zone-panel {
+    width: 420px;
+  }
+  
+  .zone-panel.is-open {
+    transform: translateX(0);
+  }
+  
+  .admin-panel {
+    width: 480px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .mode-selector__options {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+}
+
+/* Large tablets and small desktops */
+@media (min-width: 1025px) and (max-width: 1280px) {
+  .zone-panel {
+    width: 400px;
+  }
+  
+  .admin-panel {
+    width: 500px;
   }
 }
 
